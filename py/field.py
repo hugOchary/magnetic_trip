@@ -1,11 +1,12 @@
-class field:
+class Field:
 
     CENTRAL = "central"
 
-    def __init__(self, intensity, distFunction, origin):
+    def __init__(self, intensity, origin, distFunction=lambda x :  x, attractive=True):
         self.intensity = intensity
         self.distFunction = distFunction
         self.origin = origin
+        self.attractive = attractive*(2)-1
 
     def getIntensity(self):
         return self.intensity
@@ -14,4 +15,4 @@ class field:
         return self.origin
     
     def computeForce(self, distance, masse):
-        return self.intensity*masse/self.distFunction(distance)
+        return self.attractive*self.intensity*masse/self.distFunction(distance)
