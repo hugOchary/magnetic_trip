@@ -1,3 +1,7 @@
+'''
+Optional file to store different collision detection functions
+'''
+
 import physicObject
 
 def rectangleCollisionDetector(pObject1, pObject2):

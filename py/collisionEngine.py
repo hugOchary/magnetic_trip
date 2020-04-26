@@ -1,6 +1,10 @@
+'''
+Optional file to store different collision solving functions
+'''
+
 from physicObject import PhysicObject
 
-def computeCollision(obj1, obj2):
+def collisionSolver(obj1, obj2):
     vAbs = obj1.getVAbs()
     vOrd = obj1.getVOrd()
 
