@@ -14,5 +14,5 @@ class Field:
     def getOrigin(self):
         return self.origin
     
-    def computeForce(self, distance, masse):
-        return self.attractive*self.intensity*masse/self.distFunction(distance)
+    def computeForce(self, distance, mass):
+        return self.attractive*self.intensity*mass/self.distFunction(distance)
