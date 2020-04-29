@@ -1,6 +1,6 @@
-class particle:
+class Particle:
 
-    def __init__(self, , posX, posY, charge, mass, speedX = 0, speedY = 0):
+    def __init__(self, posX, posY, charge, mass, speedX = 0, speedY = 0):
         self.posX = posX
         self.posY = posY
         self.charge = charge
@@ -20,8 +20,19 @@ class particle:
     def getMass(self):
         return self.mass
     
-    def getSpeedX():
+    def getSpeedX(self):
         return self.speedX
 
-    def getSpeedY():
+    def getSpeedY(self):
         return self.speedY
+    
+    def updateSpeed(self, speedTuple):
+        self.speedX = speedTuple[0]
+        self.speedY = speedTuple[1]
+    
+    def updatePos(self, posTuple):
+        self.posX = posTuple[0]
+        self.posY = posTuple[1]
+
+    def display(self):
+        print("object is at x : {0} y : {1}".format(self.posX, self.posY))

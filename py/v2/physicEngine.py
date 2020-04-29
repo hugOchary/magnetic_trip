@@ -1,7 +1,9 @@
 import importer
+import math
 
 def computeDistance(xObj, yObj, xField, yField):
-    return (xObj-xField)**2+(yObj-yField)**2
+    print(math.sqrt(((xObj-xField)**2)+((yObj-yField)**2)))
+    return ((xObj-xField)**2)+((yObj-yField)**2)
 
 def computeAxisDeltaSpeed(massObj, force, timeDelta):
     '''
@@ -13,11 +15,11 @@ def computeAxisDeltaSpeed(massObj, force, timeDelta):
 def computeAxisNewSpeed(speed, massObj, force, timeDelta):
     return speed + computeAxisDeltaSpeed(massObj, force, timeDelta)
 
-def computeAxisNewPosition(position, speed, timedelta):
+def computeAxisNewPosition(position, speed, timeDelta):
     return position + speed*timeDelta
 
 def computeFieldInfluence(distSquare, chargeObj, chargeField, envMod):
-    return chargeObj*chargeField*envMod/distSquares
+    return chargeObj*chargeField*envMod/distSquare
 
 def computeAxisField(posObj, posField, distSquare, fieldInfluence):
     return fieldInfluence*(posObj-posField)**2/distSquare
@@ -29,7 +31,7 @@ def computeForceAllField(obj, fieldList, envMod):
     yObj = obj.getY()
     chargeObj = obj.getCharge()
     for field in fieldList:
-        xfield = field.getX()
+        xField = field.getX()
         yField = field.getY()
         chargeField = field.getCharge()
         distSquare = computeDistance(xObj, yObj, xField, yField)
@@ -41,14 +43,14 @@ def computeForceAllField(obj, fieldList, envMod):
 def computeNewObjSpeed(obj, fieldList, timeDelta, envMod):
     speedX = obj.getSpeedX()
     speedY = obj.getSpeedY()
-    massObj = obj.getMasse()
+    massObj = obj.getMass()
     (forceX, forceY) = computeForceAllField(obj, fieldList, envMod)
     speedX += computeAxisDeltaSpeed(massObj, forceX, timeDelta)
     speedY += computeAxisDeltaSpeed(massObj, forceY, timeDelta)
     return (speedX, speedY)
 
-def computeNewObjPos(obj, speedX, speedY, timeDelta):
-    xObj = computeAxisNewPosition(obj.getX(), speed, timedelta)
-    yObj = computeAxisNewPosition(obj.getY(), speed, timeDelta)
+def computeNewObjPos(obj,timeDelta):
+    xObj = computeAxisNewPosition(obj.getX(), obj.getSpeedX(), timeDelta)
+    yObj = computeAxisNewPosition(obj.getY(), obj.getSpeedY(), timeDelta)
     return (xObj, yObj)
 
