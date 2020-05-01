@@ -2,8 +2,19 @@ import importer
 import math
 
 def computeDistance(xObj, yObj, xField, yField):
-    print(math.sqrt(((xObj-xField)**2)+((yObj-yField)**2)))
-    return ((xObj-xField)**2)+((yObj-yField)**2)
+    '''
+    Return the distance between obj and field
+    '''
+    return math.sqrt(((xObj-xField)**2)+((yObj-yField)**2))
+
+def toVect(xObj, yObj, xField, yField, distance):
+    '''
+    Return a unitary vector going from obj to field
+    '''
+    return (
+        (xObj-xField)/distance, 
+        (yObj-yField)/distance
+        )
 
 def computeAxisDeltaSpeed(massObj, force, timeDelta):
     '''
@@ -18,26 +29,34 @@ def computeAxisNewSpeed(speed, massObj, force, timeDelta):
 def computeAxisNewPosition(position, speed, timeDelta):
     return position + speed*timeDelta
 
-def computeFieldInfluence(distSquare, chargeObj, chargeField, envMod):
-    return chargeObj*chargeField*envMod/distSquare
+def computeFieldInfluence(distSquare, massObj, massField, envMod):
+    return -1*massObj*massField*envMod/distSquare
 
-def computeAxisField(posObj, posField, distSquare, fieldInfluence):
-    return fieldInfluence*(posObj-posField)**2/distSquare
+def computeVectField(vectObjField, fieldInfluence):
+    return (
+        vectObjField[0]*fieldInfluence,
+        vectObjField[1]*fieldInfluence
+        )
 
 def computeForceAllField(obj, fieldList, envMod):
     forceX = 0
     forceY = 0
     xObj = obj.getX()
     yObj = obj.getY()
-    chargeObj = obj.getCharge()
+    massObj = obj.getMass()
     for field in fieldList:
+        #Field parameters
         xField = field.getX()
         yField = field.getY()
-        chargeField = field.getCharge()
-        distSquare = computeDistance(xObj, yObj, xField, yField)
-        fieldInfluence = computeFieldInfluence(distSquare, chargeObj, chargeField, envMod)
-        forceX = forceX + computeAxisField(xObj, xField, distSquare, fieldInfluence)
-        forceY = forceY + computeAxisField(yObj, yField, distSquare, fieldInfluence)
+        massField = field.getMass()
+        #Field computation
+        distance = computeDistance(xObj, yObj, xField, yField)
+        vectObjField = toVect(xObj, yObj, xField, yField, distance)
+        fieldInfluence = computeFieldInfluence(
+            distance*distance, massObj, massField, envMod)
+        fieldInfluenceVect = computeVectField(vectObjField, fieldInfluence)
+        forceX = forceX + fieldInfluenceVect[0]
+        forceY = forceY + fieldInfluenceVect[1]
     return (forceX, forceY)
 
 def computeNewObjSpeed(obj, fieldList, timeDelta, envMod):

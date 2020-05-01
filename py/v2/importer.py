@@ -4,6 +4,7 @@ import sys
 sys.path.insert(1, sys.path[0]+'\class')
 sys.path.insert(1, sys.path[0]+'\gameEngine')
 sys.path.insert(1, sys.path[0]+'\graphicEngine')
+sys.path.insert(1, sys.path[0]+'\..\ressources')
 
 from particle import *
 from physicEngine import *

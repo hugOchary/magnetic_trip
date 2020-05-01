@@ -58,6 +58,9 @@ class Renderer:
                 halfHeight)
             )
     
+    def drawImage(self, image, objX, objY):
+        self.screen.blit(image, (objX, objY))
+    
     def reset(self):
         self.background.fill((250, 250, 250))
         self.screen.blit(self.background, (0, 0))

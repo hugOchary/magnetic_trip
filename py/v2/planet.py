@@ -12,10 +12,28 @@ if __name__ == "__main__":
     clock = pygame.time.Clock()
     running = True
 
+    # fireball = pygame.image.load('fireball.png').convert()
+    # blackhole = pygame.image.load('blackHole.png').convert()
+
     #Physic init
-    sun = Particle(0, 0, -1000, 10)
-    planet = Particle(178, 274, 1, 0.1, 0, 0)
-    fieldList = [sun]
+    sun1 = Particle(
+        posX=0, 
+        posY=0, 
+        charge=-1000, 
+        mass=10000)
+    sun2 = Particle(
+        posX=-200, 
+        posY=0, 
+        charge=-1000, 
+        mass=10000)
+    planet = Particle(
+        posX=100, 
+        posY=0, 
+        charge=1, 
+        mass=100, 
+        speedX=0,
+        speedY=10)
+    fieldList = [sun1, sun2]
     timeDelta = 0.1
     envMod = 1
     x0 = 0
@@ -53,8 +71,16 @@ if __name__ == "__main__":
 
         renderer.reset()
 
-        renderer.drawRect(planet.getX(), planet.getY(), 15, 15)
-        renderer.drawRect(sun.getX(), sun.getY(), 30, 30)
+
+        
+        # renderer.drawImage(blackHole, sun1.getX(), sun1.getY())
+        # renderer.drawImage(blackHole, sun2.getX(), sun2.getY())
+        # renderer.drawImage(fireball, planet.getX(), planet.getY())
+        
+        renderer.drawRect(sun1.getX(), sun1.getY(), 30, 30)
+        renderer.drawRect(sun2.getX(), sun2.getY(), 30, 30)
+        renderer.drawRect(planet.getX(), planet.getY(), 15, 15, (100, 100, 255))
+        
 
         # renderer.drawRect(x0, y0, 15, 15)
         # renderer.drawRect(x1, y1, 15, 15, (0,255,0))
