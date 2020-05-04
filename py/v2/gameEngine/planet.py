@@ -18,8 +18,8 @@ if __name__ == "__main__":
     #Physic init
     #Creation of our objects
     sun1 = Particle(
-        posX=-250, 
-        posY=-216, 
+        posX=0, 
+        posY=0, 
         charge=-1000, 
         mass=100000)
     sun2 = Particle(
@@ -39,14 +39,16 @@ if __name__ == "__main__":
             randrange(-400,400),
             charge = 1,
             mass = randrange(50, 4000),
-            speedX=randrange(-30, 30),
-            speedY=randrange(-30, 30)
-        ) for i in range(100)]
+            speedX=0,
+            speedY=0
+        ) for i in range(15)]
 
-    fieldList = [sun1, sun2, sun3]+objectList
+    fieldList = [sun1]+objectList
     
     # Setting of the environment variables
-    timeDelta = 0.1
+    # timedelta sets the speed of the simulation
+    timeDelta = 0.05
+    # timedelta sets the strengh of gravity in the simulation
     envMod = 1
     
     while running:
@@ -58,11 +60,11 @@ if __name__ == "__main__":
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 running = False
 
-        loop(objectList, objectList, [], timeDelta, envMod)
+        loop(objectList, fieldList, [], timeDelta, envMod)
 
         renderer.reset()
         
-        # renderer.drawCircle(sun1.getX(), sun1.getY(), 10)
+        renderer.drawCircle(sun1.getX(), sun1.getY(), 10)
         # renderer.drawCircle(sun2.getX(), sun2.getY(), 10)
         # renderer.drawCircle(sun3.getX(), sun3.getY(), 10)
 
