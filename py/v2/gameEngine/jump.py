@@ -8,10 +8,12 @@ if __name__ == "__main__":
     Simple script to test movement and collision
     '''
 
-    player = Box(
+    player = Player(
+        jumpSpeed = 50,
+        moveSpeed = 40,
         halfWidth=25,
         halfHeight=25,
-        posX=0,
+        posX=200,
         posY=200,
         charge=0,
         mass=1,
@@ -56,11 +58,12 @@ if __name__ == "__main__":
         posX=0, 
         posY=0, 
         charge=0, 
-        mass=100000)
+        mass=300000)
 
     globalField = (0,-10)
 
     renderer = Renderer(WIDTH, HEIGHT, 'jump')
+    controlHandler = ControlHandler(player)
 
     clock = pygame.time.Clock()
     running = True
@@ -69,11 +72,13 @@ if __name__ == "__main__":
     globalFieldList = [globalField]
     objectList = [player]
     staticObjectList = [ground, lWall, rWall]
-    fieldList = []
+    fieldList = [blackHole]
     timeDelta = 0.1
     envMod = 1
 
     sortedBoxList = []
+
+    
 
     while running:
 
@@ -89,13 +94,18 @@ if __name__ == "__main__":
                 (rect.getRight(), 'r', rect)
             )
 
-        #We resolve user inputs
+        #We resolve user inputs and game mecanic
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                 running = False
-        
+            elif event.type == pygame.KEYDOWN:
+                controlHandler.handlePress(event)
+            elif event.type == pygame.KEYUP:
+                controlHandler.handleRelease(event)
+        player.moveInDirection(timeDelta)
+
         #We execute the physic simulation
         loop(objectList, fieldList, globalFieldList, timeDelta, envMod)
         displaceVect = sortAndSweepCollisionSolver(player, sortedBoxList)
@@ -114,4 +124,5 @@ if __name__ == "__main__":
             )
         renderer.update()
 
+        player.display()
         clock.tick(120)

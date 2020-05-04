@@ -8,6 +8,8 @@ sys.path.insert(1, sys.path[0]+'\..\ressources')
 
 from particle import *
 from box import *
+from player import *
 from physicEngine import *
 from collisionEngine import *
 from renderer import *
+from controlHandler import *

@@ -16,6 +16,7 @@ if __name__ == "__main__":
     running = True
 
     #Physic init
+    #Creation of our objects
     sun1 = Particle(
         posX=-250, 
         posY=-216, 
@@ -41,8 +42,10 @@ if __name__ == "__main__":
             speedX=randrange(-30, 30),
             speedY=randrange(-30, 30)
         ) for i in range(100)]
+
     fieldList = [sun1, sun2, sun3]+objectList
-        
+    
+    # Setting of the environment variables
     timeDelta = 0.1
     envMod = 1
     
