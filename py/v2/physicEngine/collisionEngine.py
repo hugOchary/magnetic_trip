@@ -33,8 +33,6 @@ def collisionSolver(box1, box2):
     elif signY == 0:
         return (absDisplace, 0)
     else :
-        box1.display()
-        box2.display()
         (affA, affB) = toAffineFunction(
             reverseSpeedVect[0],
             reverseSpeedVect[1],

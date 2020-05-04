@@ -13,12 +13,10 @@ if __name__ == "__main__":
         moveSpeed = 40,
         halfWidth=25,
         halfHeight=25,
-        posX=200,
-        posY=200,
+        posX=0,
+        posY=-325,
         charge=0,
-        mass=1,
-        speedX=40,
-        speedY=40
+        mass=1
     )
 
     ground = Box(
@@ -27,9 +25,7 @@ if __name__ == "__main__":
         posX=0,
         posY=-HEIGHT/2,
         charge=0,
-        mass=1,
-        speedX=0,
-        speedY=0
+        mass=1
     )
 
     lWall = Box(
@@ -38,9 +34,7 @@ if __name__ == "__main__":
         posX=-WIDTH//2,
         posY=0,
         charge=0,
-        mass=1,
-        speedX=0,
-        speedY=0
+        mass=1
     )
 
     rWall = Box(
@@ -49,16 +43,71 @@ if __name__ == "__main__":
         posX=WIDTH//2,
         posY=0,
         charge=0,
-        mass=1,
-        speedX=0,
-        speedY=0
+        mass=1
     )
 
-    blackHole = Particle(
-        posX=0, 
-        posY=0, 
+    roof = Box(
+        halfWidth=WIDTH/2,
+        halfHeight=20,
+        posX=0,
+        posY=HEIGHT/2,
+        charge=0,
+        mass=1
+    )
+
+    plat01 = Box(
+        halfWidth=50,
+        halfHeight=20,
+        posX=-150,
+        posY=-250,
+        charge=0,
+        mass=1
+    )
+    
+    plat02 = Box(
+        halfWidth=50,
+        halfHeight=20,
+        posX=34,
+        posY=-137,
+        charge=0,
+        mass=1
+    )
+
+    plat03 = Box(
+        halfWidth=50,
+        halfHeight=20,
+        posX=-100,
+        posY=25,
+        charge=0,
+        mass=1
+    )
+
+    plat04 = Box(
+        halfWidth=50,
+        halfHeight=20,
+        posX=150,
+        posY=-25,
+        charge=0,
+        mass=1
+    )
+
+
+    blackHole1 = Particle(
+        posX=-400, 
+        posY=120, 
         charge=0, 
-        mass=300000)
+        mass=50000)
+    blackHole2 = Particle(
+        posX=400, 
+        posY=120, 
+        charge=0, 
+        mass=50000)
+    blackHole3 = Particle(
+        posX=0, 
+        posY=300, 
+        charge=0, 
+        mass=100000)
+
 
     globalField = (0,-10)
 
@@ -68,11 +117,11 @@ if __name__ == "__main__":
     clock = pygame.time.Clock()
     running = True
 
-    rectList = [ground, lWall, rWall, player]
+    rectList = [ground, lWall, rWall, roof, plat01, plat02, plat03, plat04, player]
     globalFieldList = [globalField]
     objectList = [player]
-    staticObjectList = [ground, lWall, rWall]
-    fieldList = [blackHole]
+    staticObjectList = [ground, lWall, rWall, roof, plat01, plat02, plat03, plat04]
+    fieldList = [blackHole1, blackHole2, blackHole3]
     timeDelta = 0.1
     envMod = 1
 
@@ -83,38 +132,24 @@ if __name__ == "__main__":
     while running:
 
         #we build the sorted list of all absciss
-        sortedBoxList = []
-        for rect in staticObjectList:
-            sortedBoxList.insert(
-                indexInsertSorted(rect.getLeft(), sortedBoxList),
-                (rect.getLeft(), 'l', rect)
-            )
-            sortedBoxList.insert(
-                indexInsertSorted(rect.getRight(), sortedBoxList),
-                (rect.getRight(), 'r', rect)
-            )
+        sortedBoxList = buildSortedBoxList(staticObjectList)
 
         #We resolve user inputs and game mecanic
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                running = False
-            elif event.type == pygame.KEYDOWN:
-                controlHandler.handlePress(event)
-            elif event.type == pygame.KEYUP:
-                controlHandler.handleRelease(event)
-        player.moveInDirection(timeDelta)
+        running = eventHandling(controlHandler)
+        playerMovementLoop(player, sortedBoxList, timeDelta)
 
         #We execute the physic simulation
-        loop(objectList, fieldList, globalFieldList, timeDelta, envMod)
-        displaceVect = sortAndSweepCollisionSolver(player, sortedBoxList)
-        if displaceVect != (0,0):
-            player.forceDisplace(displaceVect)
+        physicLoop(
+            player, sortedBoxList, 
+            objectList, fieldList, 
+            globalFieldList, timeDelta, 
+            envMod)
 
         #We draw the result on the screen
         renderer.reset()
-        renderer.drawCircle(blackHole.getX(), blackHole.getY(), 30)
+        renderer.drawCircle(blackHole1.getX(), blackHole1.getY(), 30)
+        renderer.drawCircle(blackHole2.getX(), blackHole2.getY(), 30)
+        renderer.drawCircle(blackHole3.getX(), blackHole3.getY(), 30)
         for rect in rectList:
             renderer.drawRect(
                 rect.getX(), 
@@ -123,6 +158,4 @@ if __name__ == "__main__":
                 rect.getHalfHeight()
             )
         renderer.update()
-
-        player.display()
         clock.tick(120)

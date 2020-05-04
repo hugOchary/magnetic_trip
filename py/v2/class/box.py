@@ -24,3 +24,9 @@ class Box(Particle):
     
     def getHalfHeight(self):
         return self.halfHeight
+    
+    def forceDisplace(self, vect):
+        self.posX+=vect[0]
+        self.posY+=vect[1]
+        self.speedX = 0
+        self.speedY = 0

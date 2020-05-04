@@ -13,9 +13,9 @@ class ControlHandler():
 
     def handlePress(self, event):
         if event.key == pygame.K_LEFT:
-            self.player.goDirection(-1)
+            self.player.startDirection(-1)
         elif event.key == pygame.K_RIGHT:
-            self.player.goDirection(1)
+            self.player.startDirection(1)
         elif event.key == pygame.K_SPACE:
             self.player.jump()
     
