@@ -57,7 +57,17 @@ class Renderer:
                 halfWidth, 
                 halfHeight)
             )
-    
+
+    def drawCircle(self, objX, objY, radius, color = (0,0,0)):
+        pygame.draw.circle(
+            self.screen, 
+            color, 
+            (
+                int(round(self.centerX(objX))), 
+                int(round(self.convertY(self.centerY(objY))))
+            ), 
+            radius)
+
     def drawImage(self, image, objX, objY):
         self.screen.blit(image, (objX, objY))
     

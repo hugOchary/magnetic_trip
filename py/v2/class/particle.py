@@ -33,6 +33,16 @@ class Particle:
     def updatePos(self, posTuple):
         self.posX = posTuple[0]
         self.posY = posTuple[1]
+    
+    def forceDisplace(self, vect):
+        self.posX+=vect[0]
+        self.posY+=vect[1]
+        self.speedX = 0
+        self.speedY = 0
+    
+    def increaseMass(self, increaseValue):
+        self.mass += increaseValue
 
     def display(self):
-        print("object is at x : {0} y : {1}".format(self.posX, self.posY))
+        print("object is at x : {0} y : {1} going at x : {2} and y : {3}".format(
+            self.posX, self.posY, self.speedX, self.speedY))
