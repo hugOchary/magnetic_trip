@@ -91,6 +91,15 @@ if __name__ == "__main__":
         mass=1
     )
 
+    plat05 = Box(
+        halfWidth=50,
+        halfHeight=20,
+        posX=250,
+        posY=200,
+        charge=0,
+        mass=1
+    )
+
 
     blackHole1 = Particle(
         posX=-400, 
@@ -117,11 +126,17 @@ if __name__ == "__main__":
     clock = pygame.time.Clock()
     running = True
 
-    rectList = [ground, lWall, rWall, roof, plat01, plat02, plat03, plat04, player]
+    rectList = [
+        ground, lWall, rWall, roof, 
+        plat01, plat02, plat03, plat04, plat05, 
+        player]
     globalFieldList = [globalField]
     objectList = [player]
-    staticObjectList = [ground, lWall, rWall, roof, plat01, plat02, plat03, plat04]
+    staticObjectList = [
+        ground, lWall, rWall, roof, 
+        plat01, plat02, plat03, plat04, plat05]
     fieldList = [blackHole1, blackHole2, blackHole3]
+    #fieldList = []
     timeDelta = 0.1
     envMod = 1
 
