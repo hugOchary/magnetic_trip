@@ -1,7 +1,7 @@
 from importer import *
 import numpy as np
 
-def collisionSolver(box1, box2):
+def collisionSolver(box1, box2, directionalCollision):
     '''
     Returns the new positionafter collision resolution
     '''
@@ -45,9 +45,9 @@ def collisionSolver(box1, box2):
         dist2 = distanceSquare(posX, posY, testPosX, newPosY)
 
         if dist1 <= dist2:
-            return (newPosX-posX, testPosY-posY)
+            return (newPosX-posX, (testPosY-posY)*directionalCollision)
         else :
-            return (testPosX-posX, newPosY-posY)
+            return ((testPosX-posX)*directionalCollision, newPosY-posY)
 
     
 
@@ -65,7 +65,7 @@ def boxCollisionDetector(box1, box2):
     )
 
 
-def sortAndSweepCollisionSolver(box, sortedBoxList):
+def sortAndSweepCollisionSolver(box, sortedBoxList, directionalCollision):
     '''
     Return the displacement required to avoid collision
     '''
@@ -91,7 +91,7 @@ def sortAndSweepCollisionSolver(box, sortedBoxList):
         if boxCollisionDetector(box, activeBox):
 
             #Resolution : 
-            (dX, dY) = collisionSolver(box, activeBox)
+            (dX, dY) = collisionSolver(box, activeBox, directionalCollision)
             resX = selectExtreme(dX, resX)
             resY = selectExtreme(dY, resY)
 
@@ -100,7 +100,7 @@ def sortAndSweepCollisionSolver(box, sortedBoxList):
         if boxCollisionDetector(box, sortedBoxList[index][2]):
 
             #Resolution : 
-            (dX, dY) = collisionSolver(box, sortedBoxList[index][2])
+            (dX, dY) = collisionSolver(box, sortedBoxList[index][2], directionalCollision)
             resX = selectExtreme(dX, resX)
             resY = selectExtreme(dY, resY)
 

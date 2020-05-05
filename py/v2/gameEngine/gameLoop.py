@@ -29,7 +29,7 @@ def eventHandling(controlHandler):
 def playerMovementLoop(player, sortedBoxList, timeDelta):
     player.startMoving()
     player.moveInDirection(timeDelta)
-    playerCollision(player, sortedBoxList)
+    playerCollision(player, sortedBoxList, 1)
     player.stopMoving()
     return player
 
@@ -39,11 +39,12 @@ def physicLoop(
     globalFieldList, timeDelta, 
     envMod):
     loop(objectList, fieldList, globalFieldList, timeDelta, envMod)
-    playerCollision(player, sortedBoxList)
+    playerCollision(player, sortedBoxList, 0)
     return player
 
-def playerCollision(player, sortedBoxList):
-    displaceVect = sortAndSweepCollisionSolver(player, sortedBoxList)
+def playerCollision(player, sortedBoxList, directionalCollision):
+    displaceVect = sortAndSweepCollisionSolver(
+        player, sortedBoxList, directionalCollision)
     if displaceVect != (0,0):
         player.forceDisplace(displaceVect)
     return player
